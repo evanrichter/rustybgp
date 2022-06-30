@@ -1,0 +1,7 @@
+project: rustybgp
+target: bgp-decode
+
+cmds:
+  - cmd: /bgp_decode
+  - cmd: /bgp_decode_no_inst @@
+    libfuzzer: false
