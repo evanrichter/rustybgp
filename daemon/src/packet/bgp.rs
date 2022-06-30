@@ -2167,7 +2167,12 @@ impl Decoder for Codec {
                 }
                 c.set_position(c.position() + withdrawn_len as u64);
                 let attr_len = c.read_u16::<NetworkEndian>()?;
-                if buf.len() < (withdrawn_len + attr_len + MINIMUM_UPDATE_LENGTH as u16).into() {
+                if buf.len()
+                    < (withdrawn_len
+                        .saturating_add(attr_len)
+                        .saturating_add(MINIMUM_UPDATE_LENGTH as u16))
+                    .into()
+                {
                     return Err(malformed());
                 }
                 let mut seen = FnvHashMap::default();
