@@ -1,0 +1,35 @@
+[package]
+name = "rustybgpd-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2018"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+bytes = "1.0"
+tokio-util = { version = "0.6", features = ["codec","time"] }
+
+[dependencies.rustybgpd]
+path = ".."
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "bgp_decode"
+path = "fuzz_targets/bgp_decode.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "rpki_decode"
+path = "fuzz_targets/rpki_decode.rs"
+test = false
+doc = false
+
+[profile.release]
+debug = true
