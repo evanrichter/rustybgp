@@ -1,0 +1,7 @@
+project: rustybgp
+target: rpki_decode
+
+cmds:
+  - cmd: /rpki_decode
+  - cmd: /rpki_decode_no_inst @@
+    libfuzzer: false
