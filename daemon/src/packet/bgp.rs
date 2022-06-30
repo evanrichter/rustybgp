@@ -740,19 +740,23 @@ static CAP_DESCS: Lazy<FnvHashMap<u8, CapDesc>> = Lazy::new(|| {
                 if len < 1 {
                     return Err(());
                 }
-                let hostlen = c.read_u8().unwrap();
+                let hostlen = c.read_u8().map_err(|_| ())?;
                 let mut h = Vec::new();
                 for _ in 0..hostlen {
-                    h.push(c.read_u8().unwrap());
+                    h.push(c.read_u8().map_err(|_| ())?);
                 }
-                let host = ascii::AsciiString::from_ascii(h).unwrap().to_string();
+                let host = ascii::AsciiString::from_ascii(h)
+                    .map_err(|_| ())?
+                    .to_string();
 
-                let domainlen = c.read_u8().unwrap();
+                let domainlen = c.read_u8().map_err(|_| ())?;
                 let mut d = Vec::new();
                 for _ in 0..domainlen {
-                    d.push(c.read_u8().unwrap());
+                    d.push(c.read_u8().map_err(|_| ())?);
                 }
-                let domain = ascii::AsciiString::from_ascii(d).unwrap().to_string();
+                let domain = ascii::AsciiString::from_ascii(d)
+                    .map_err(|_| ())?
+                    .to_string();
                 Ok(Capability::Fqdn(host, domain))
             }),
         },
